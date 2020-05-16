@@ -8,16 +8,17 @@
 	<body>
 		<h1>My TODO list</h1>
 		<div id="todo-table">
-			<form>
-				<input type="text" placeholder="add new item..." required />
+			<form method="POST">
+				<input type="text" id="name" name="name" placeholder="add new name..." required />
+				<input type="text"  id="item" name="item" placeholder="add new item..." required />
 				<button type="submit">Add Item</button>
 			</form>
 			<ul>
 				<% for(var i=0; i< todos.length; i++){ %>
-					<li><%= todos[i].item %></li>
+					<li data-item="<%= todos[i]._id %>"><%= todos[i].item %> task for <%= todos[i].name %></li>
 				<% } %>
 			</ul>
 		</div>
 	</body>
-
+<script src="/assets/todo-list.js"></script>
 </html>

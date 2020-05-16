@@ -2,8 +2,9 @@ $(document).ready(function(){
 
   $('form').on('submit', function(){
 
-      var item = $('form input');
-      var todo = {item: item.val()};
+      var item = $('#item');
+      var name = $('#name');
+      var todo = {item: item.val(), name : name.val()};
 
       $.ajax({
         type: 'POST',
@@ -20,13 +21,14 @@ $(document).ready(function(){
   });
 
   $('li').on('click', function(){
-      var item = $(this).text().replace(/ /g, "-");
+      let el =  $(this);
+      var id = $(this).attr("data-item");
       $.ajax({
         type: 'DELETE',
-        url: '/todo/' + item,
+        url: '/todo/' + id,
         success: function(data){
           //do something with the data via front-end framework
-          location.reload();
+          el.remove();
         }
       });
   });

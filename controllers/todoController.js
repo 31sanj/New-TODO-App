@@ -1,3 +1,4 @@
+let morgan = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
@@ -7,6 +8,7 @@ mongoose.connect('mongodb+srv://sanj_31:sanjpal@todo-mqzgw.mongodb.net/test?retr
 
 //create a schema 
 var todoSchema = new mongoose.Schema({
+	name: String,
 	item: String
 });
 
@@ -17,6 +19,8 @@ var Todo = mongoose.model('Todo', todoSchema);
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports = function(app){
+
+	app.use(morgan("dev"));
 
 	app.get('/todo', function(req, res){
 
@@ -32,7 +36,7 @@ module.exports = function(app){
 	app.post('/todo', urlencodedParser, function(req, res){
 
 		//get data from view and add to mongodb
-
+		console.log(req.body);
 		var newTodo = Todo(req.body).save(function(err,data){
 			if(err) throw err;
 			res.json(data);
@@ -40,11 +44,11 @@ module.exports = function(app){
 	});
 
 
-	app.delete('/todo/:item', function(req, res){
+	app.delete('/todo/:id', function(req, res){
 
 		//delete the required item from mongodb
-
-		Todo.find({item: req.params.item.replace(/\-/g, " ")}).remove(function(err, data){
+		console.log(req.params.id)
+		Todo.find({_id: req.params.id.replace(/\-/g, " ")}).remove(function(err, data){
 			if(err) throw err;
 			res.json(data);
 		});
